@@ -1,0 +1,6 @@
+.DS_Store
+node_modules/
+*.log
+.cache/
+# Redundant ZIP (just a packaging of files already in repo)
+exports/CNET_Benchmark_UX_2026_Figma.zip
