@@ -2,41 +2,56 @@
 <html lang="es">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=1280, initial-scale=1" />
+<meta name="viewport" content="width=1920, initial-scale=1" />
 <title>Coches.net — Benchmark UX 2026 · Erretres</title>
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-<link href="https://api.fontshare.com/v2/css?f[]=neue-montreal@500&f[]=jetbrains-mono@500&display=swap" rel="stylesheet" />
+<link href="https://api.fontshare.com/v2/css?f[]=neue-montreal@400,500&f[]=jetbrains-mono@500&display=swap" rel="stylesheet" />
 <style>
 :root{
-  --ink:#0A0A0B;
+  /* ====== Erretres color tokens (from Figma) ====== */
+  --ink:#0F0F0F;
   --paper:#FFFFFF;
   --bone:#F2EFEA;
   --fog:#EDECE8;
-  --rule:rgba(10,10,11,.14);
+  --rule:rgba(15,15,15,.12);
   --quiet:#6B6B72;
   --quieter:#9A9AA0;
-  --blue:#1F3FFF;
+  --blue:#1F61FF;          /* Erretres/Blue */
   --blue-2:#0026E0;
-  --signal:#FFE500;
+  --signal:#FFE500;        /* Sticky note · oportunidad / observación */
+  --insight:#7AE171;       /* Sticky note · insight transferible */
   --warn:#FF4D2D;
   --good:#1FB872;
-  --slide-w:1280px;
-  --slide-h:720px;
-  --gutter:64px;
+
+  /* ====== Slide dimensions (Erretres 1920×1080) ====== */
+  --slide-w:1920px;
+  --slide-h:1080px;
+  --gutter:48px;
   --slide-scale:1;
-  /* PP Neue Montreal (Fontshare host "Neue Montreal" — closest free equivalent).
-     If PP Neue Montreal is installed locally on the reader's machine,
-     it takes precedence automatically thanks to the first family declaration. */
-  --font-sans:'PP Neue Montreal','Neue Montreal','Inter','SF Pro Display','Helvetica Neue',Arial,sans-serif;
-  --font-serif:'PP Neue Montreal','Neue Montreal','Inter','Helvetica Neue',Arial,sans-serif;
-  --font-mono:'PP Neue Montreal','Neue Montreal','JetBrains Mono',ui-monospace,Menlo,monospace;
+
+  /* ====== Typography ======
+     Brand uses New Rail Alphabet (A2-Type, commercial).
+     Falls back to Neue Montreal (Fontshare) and Inter if not installed locally. */
+  --font-sans:'New Rail Alphabet','PP Neue Montreal','Neue Montreal','Inter','SF Pro Display','Helvetica Neue',Arial,sans-serif;
+  --font-anno:'Helvetica Neue','Helvetica','Inter',Arial,sans-serif;
+  --font-mono:'JetBrains Mono','New Rail Alphabet','PP Neue Montreal',ui-monospace,Menlo,monospace;
+
+  /* ====== Drop shadow used on captures and stickies ====== */
+  --shadow-capture:0 0 60px 0 rgba(0,0,0,.10);
+  --shadow-sticky:0 4px 2px rgba(0,0,0,.09), 0 1px 1.5px rgba(0,0,0,.09);
 }
-*{box-sizing:border-box;font-weight:500!important;font-style:normal!important}
-html,body{margin:0;padding:0;background:#1a1a1c;color:var(--ink);font-family:var(--font-sans)}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#1a1a1c;color:var(--ink);font-family:var(--font-sans);font-weight:500;font-style:normal}
 body{overflow-x:hidden}
 a{color:inherit}
 img{max-width:100%;display:block}
-em,i,strong,b,h1,h2,h3,h4,h5,h6,p,span,div,li,td,th,button,label,small{font-style:normal!important;font-weight:500!important;font-family:var(--font-sans)}
+/* Brand mark on slide uses Regular for marca, Medium for sección */
+.slide__mark{font-weight:400!important;font-family:var(--font-sans);font-style:normal}
+.slide__section{font-weight:500!important;font-family:var(--font-sans);font-style:normal}
+/* Sticky notes always Helvetica regular */
+.note{font-family:var(--font-anno)!important;font-weight:400!important}
+em,i{font-style:italic}
+strong,b{font-weight:500}
 
 /* ============ DECK SHELL ============ */
 .deck{
@@ -56,25 +71,26 @@ em,i,strong,b,h1,h2,h3,h4,h5,h6,p,span,div,li,td,th,button,label,small{font-styl
 }
 /* fit class scales further down for overview mode */
 body.is-fit .slide{zoom:calc(var(--slide-scale,1) * .72)}
+/* Erretres header: brand mark + section title (positions from Figma 1920×1080) */
 .slide__mark{
-  position:absolute;top:36px;left:48px;
-  font-size:12px;letter-spacing:.04em;text-transform:uppercase;
+  position:absolute;top:48px;left:48px;
+  font-size:16px;line-height:22px;letter-spacing:.02em;text-transform:uppercase;
   z-index:5;color:var(--ink);
 }
 .slide__section{
-  position:absolute;top:58px;left:48px;
-  font-size:12px;letter-spacing:.06em;text-transform:uppercase;
-  z-index:5;color:var(--quiet);
+  position:absolute;top:70px;left:48px;
+  font-size:30px;line-height:42px;letter-spacing:0;text-transform:uppercase;
+  z-index:5;color:var(--ink);
 }
 .slide__index{
-  position:absolute;bottom:32px;right:48px;
-  font-size:11px;letter-spacing:.06em;
-  color:var(--quieter);z-index:5;
+  position:absolute;bottom:48px;right:48px;
+  font-size:14px;letter-spacing:.04em;
+  color:var(--quieter);z-index:5;font-family:var(--font-mono);
 }
 .slide__foot{
-  position:absolute;bottom:32px;left:48px;
-  font-size:11px;letter-spacing:.06em;
-  color:var(--quieter);z-index:5;text-transform:uppercase;
+  position:absolute;bottom:48px;left:48px;
+  font-size:14px;letter-spacing:.04em;
+  color:var(--quieter);z-index:5;text-transform:uppercase;font-family:var(--font-mono);
 }
 
 /* Variants */
@@ -298,7 +314,7 @@ body.is-fit .slide{zoom:calc(var(--slide-scale,1) * .72)}
 .sidenav a.is-active{background:#fff;transform:scale(1.8)}
 
 /* ============ PRINT (PDF) ============ */
-@page{size:1280px 720px;margin:0}
+@page{size:1920px 1080px;margin:0}
 @media print{
   html,body{background:#fff}
   .deck{padding:0;gap:0}
@@ -412,19 +428,33 @@ body.is-fit .slide{zoom:calc(var(--slide-scale,1) * .72)}
 .shot--contain{background-size:contain;background-repeat:no-repeat;background-color:#fafafa}
 
 /* ============ PAGE ANALYSIS (Autocasion-style) ============ */
-.page-analysis{position:relative;height:100%;padding:88px 64px 88px;display:grid;grid-template-rows:auto 1fr;gap:24px;overflow:hidden}
-.page-analysis__head{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:end}
-.page-analysis__head .eyebrow{margin-bottom:10px;display:block}
-.page-analysis__title{font-size:30px;line-height:1.08;letter-spacing:-.02em;max-width:600px;margin:0}
-.page-analysis__lede{font-size:14px;line-height:1.55;color:var(--quiet);max-width:480px;margin:0;letter-spacing:-.005em}
-.page-analysis__stage{position:relative;width:100%;background:var(--bone);border-radius:6px;overflow:hidden}
-.page-analysis__shot{position:absolute;left:48px;top:36px;right:48px;bottom:36px;border-radius:4px;overflow:hidden;background:#fff;box-shadow:0 30px 50px -28px rgba(0,0,0,.35),0 1px 0 rgba(0,0,0,.06)}
-.page-analysis__shot img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
-.page-analysis__shot::after{content:"";position:absolute;inset:0;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06);pointer-events:none}
-.page-analysis__url{position:absolute;left:12px;top:8px;display:flex;align-items:center;gap:6px;font-size:9px;color:var(--quieter);letter-spacing:.05em;text-transform:uppercase;z-index:5}
-.page-analysis__url::before{content:"";width:8px;height:8px;border-radius:50%;background:#e6e6e6}
-/* Stage notes: positioned absolute inside the stage by % coords from anchor */
-.page-analysis__stage .note{box-shadow:0 8px 22px -8px rgba(0,0,0,.32),0 1px 0 rgba(0,0,0,.05)}
+/* ============ PAGE-ANALYSIS · Erretres layout (1920×1080) ============
+   Layout disperso: fondo blanco, capturas con shadow suave, sticky notes flotantes con leadlines.
+   Las capturas tienen position:absolute con left/top en px (sistema de coordenadas del slide 1920).
+*/
+.page-analysis{position:absolute;inset:0;background:#fff;overflow:hidden}
+.page-analysis__shot{position:absolute;border-radius:10px;overflow:hidden;background:#fff;box-shadow:var(--shadow-capture)}
+.page-analysis__shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;border-radius:10px}
+/* Sticky notes (Erretres style — Helvetica, padding 20px, drop shadow) */
+.page-analysis .note{
+  position:absolute;background:var(--signal);color:var(--ink);
+  font-family:var(--font-anno);font-size:14px;line-height:1.335;font-weight:400!important;letter-spacing:0;
+  padding:20px;max-width:270px;
+  box-shadow:var(--shadow-sticky);
+  border-radius:0;z-index:10;
+}
+.page-analysis .note--insight{background:var(--insight)}
+.page-analysis .note--gray{background:#E9E8E2}
+.page-analysis .note--ink{background:var(--ink);color:#fff}
+.page-analysis .note--blue{background:var(--blue);color:#fff}
+/* Leadline (SVG vector connecting note to UI region) */
+.page-analysis .leadline{position:absolute;z-index:9;pointer-events:none}
+.page-analysis .leadline svg{display:block;width:100%;height:100%;overflow:visible}
+.page-analysis .leadline svg path,
+.page-analysis .leadline svg line{stroke:#0F0F0F;stroke-width:1;fill:none;stroke-linecap:round}
+.page-analysis .leadline--circle::after{
+  content:"";position:absolute;width:8px;height:8px;background:#0F0F0F;border-radius:50%;
+}
 
 /* Misc */
 .swatch{width:18px;height:18px;border-radius:4px;border:1px solid rgba(0,0,0,.08);display:inline-block;vertical-align:middle}
@@ -800,7 +830,7 @@ SLIDE 13 — CHAPTER 02 COVER · BENCHMARK DIRECTO
   <p class="chapter__lede">Diez plataformas que compiten con Coches.net en superficie y en propósito. Marketplaces, dealers digitales, comparadores y verticales editoriales.</p>
   <div class="chapter__bar"></div>
   <div class="chapter__index">
-    <span>10 referencias · 28 slides</span>
+    <span>11 referencias · 56 slides</span>
     <span>02 — Directo</span>
   </div>
 </section>
@@ -862,7 +892,7 @@ SLIDE 15 — AUTOSCOUT24 · COVER
   <div class="slide__index"></div>
   <div class="brand-cover">
     <div class="brand-cover__shot"><img src="assets/screenshots/autoscout24/home.png" alt=""/></div>
-    <span class="brand-cover__eye">Benchmark directo · 01 / 10</span>
+    <span class="brand-cover__eye">Benchmark directo · 01 / 11</span>
     <span class="brand-cover__name">AutoScout24</span>
     <div class="brand-cover__meta">
       <span>autoscout24.es</span>
@@ -1008,7 +1038,7 @@ SLIDE 17 — AUTOCASION · COVER
   <div class="slide__index"></div>
   <div class="brand-cover">
     <div class="brand-cover__shot"><img src="assets/screenshots/autocasion/home.png" alt=""/></div>
-    <span class="brand-cover__eye">Benchmark directo · 02 / 10</span>
+    <span class="brand-cover__eye">Benchmark directo · 02 / 11</span>
     <span class="brand-cover__name">Autocasion</span>
     <div class="brand-cover__meta">
       <span>autocasion.com</span>
@@ -1179,7 +1209,7 @@ SLIDE 19 — WALLAPOP MOTOR · COVER
   <div class="slide__index"></div>
   <div class="brand-cover">
     <div class="brand-cover__shot"><img src="assets/screenshots/wallapop/home.png" alt=""/></div>
-    <span class="brand-cover__eye">Benchmark directo · 03 / 10</span>
+    <span class="brand-cover__eye">Benchmark directo · 03 / 11</span>
     <span class="brand-cover__name">Wallapop</span>
     <div class="brand-cover__meta">
       <span>wallapop.com</span>
@@ -1298,7 +1328,7 @@ SLIDE 21 — MILANUNCIOS MOTOR · COVER
   <div class="slide__index"></div>
   <div class="brand-cover">
     <div class="brand-cover__shot"><img src="assets/screenshots/milanuncios/home.png" alt=""/></div>
-    <span class="brand-cover__eye">Benchmark directo · 04 / 10</span>
+    <span class="brand-cover__eye">Benchmark directo · 04 / 11</span>
     <span class="brand-cover__name">Milanuncios</span>
     <div class="brand-cover__meta">
       <span>milanuncios.com</span>
@@ -1417,7 +1447,7 @@ SLIDE 23 — AUTOHERO · COVER
   <div class="slide__index"></div>
   <div class="brand-cover">
     <div class="brand-cover__shot"><img src="assets/screenshots/autohero/home.png" alt=""/></div>
-    <span class="brand-cover__eye">Benchmark directo · 05 / 10</span>
+    <span class="brand-cover__eye">Benchmark directo · 05 / 11</span>
     <span class="brand-cover__name">AutoHero</span>
     <div class="brand-cover__meta">
       <span>autohero.com</span>
@@ -1537,7 +1567,7 @@ SLIDE 25 — CLICARS · COVER
   <div class="slide__index"></div>
   <div class="brand-cover">
     <div class="brand-cover__shot"><img src="assets/screenshots/clicars/home.png" alt=""/></div>
-    <span class="brand-cover__eye">Benchmark directo · 06 / 10</span>
+    <span class="brand-cover__eye">Benchmark directo · 06 / 11</span>
     <span class="brand-cover__name">Clicars</span>
     <div class="brand-cover__meta">
       <span>clicars.com</span>
@@ -1656,7 +1686,7 @@ SLIDE 27 — OCASIONPLUS · COVER
   <div class="slide__index"></div>
   <div class="brand-cover">
     <div class="brand-cover__shot"><img src="assets/screenshots/ocasionplus/home.png" alt=""/></div>
-    <span class="brand-cover__eye">Benchmark directo · 07 / 10</span>
+    <span class="brand-cover__eye">Benchmark directo · 07 / 11</span>
     <span class="brand-cover__name">OcasionPlus</span>
     <div class="brand-cover__meta">
       <span>ocasionplus.com</span>
@@ -1774,7 +1804,7 @@ SLIDE 29 — FLEXICAR · COVER
   <div class="slide__index"></div>
   <div class="brand-cover">
     <div class="brand-cover__shot"><img src="assets/screenshots/flexicar/home.png" alt=""/></div>
-    <span class="brand-cover__eye">Benchmark directo · 08 / 10</span>
+    <span class="brand-cover__eye">Benchmark directo · 08 / 11</span>
     <span class="brand-cover__name">Flexicar</span>
     <div class="brand-cover__meta">
       <span>flexicar.es</span>
@@ -1892,7 +1922,7 @@ SLIDE 31 — CARWOW · COVER
   <div class="slide__index"></div>
   <div class="brand-cover">
     <div class="brand-cover__shot"><img src="assets/screenshots/carwow/home.png" alt=""/></div>
-    <span class="brand-cover__eye">Benchmark directo · 09 / 10</span>
+    <span class="brand-cover__eye">Benchmark directo · 09 / 11</span>
     <span class="brand-cover__name">Carwow</span>
     <div class="brand-cover__meta">
       <span>carwow.es</span>
@@ -2011,7 +2041,7 @@ SLIDE 33 — SPOTICAR · COVER
   <div class="slide__index"></div>
   <div class="brand-cover">
     <div class="brand-cover__shot"><img src="assets/screenshots/spoticar/home.png" alt=""/></div>
-    <span class="brand-cover__eye">Benchmark directo · 10 / 10</span>
+    <span class="brand-cover__eye">Benchmark directo · 10 / 11</span>
     <span class="brand-cover__name">Spoticar</span>
     <div class="brand-cover__meta">
       <span>spoticar.es</span>
@@ -2091,6 +2121,211 @@ SLIDE 33 — SPOTICAR · COVER
       </div>
       <div class="note" style="left:4%;top:18%;max-width:240px;">Garantía multi-pieza visible · servicios incluidos.</div>
       <div class="note note--blue" style="left:4%;top:80%;max-width:240px;">Insight: co-firmar sellos con OEMs es una ruta de monetización.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+TRUECAR — Benchmark directo · 11 / 11
+Style: Erretres Figma (1920×1080 · capturas + sticky notes + leadlines)
+================================================================ -->
+<section class="slide slide--blue" data-brand="truecar" data-section="cover">
+  <div class="slide__mark">RRR</div>
+  <div class="slide__index"></div>
+  <div class="brand-cover">
+    <div class="brand-cover__shot"><img src="assets/screenshots/truecar/home_main.png" alt=""/></div>
+    <span class="brand-cover__eye">Benchmark directo · 11 / 11</span>
+    <span class="brand-cover__name">TrueCar</span>
+    <div class="brand-cover__meta">
+      <span>truecar.com</span>
+      <span>Marketplace + comparador · USA</span>
+    </div>
+  </div>
+</section>
+
+<!-- TrueCar · HOME -->
+<section class="slide slide--paper" data-brand="truecar" data-section="home">
+  <div class="slide__mark">TRUECAR</div>
+  <div class="slide__section">HOME</div>
+  <div class="slide__index"></div>
+  <div class="slide__foot">02.11.1</div>
+  <div class="page-analysis">
+    <!-- Hero capture (left) -->
+    <div class="page-analysis__shot" style="left:191px;top:154px;width:813px;height:790px">
+      <img src="assets/screenshots/truecar/home_main.png" alt="TrueCar · Home" loading="lazy"/>
+    </div>
+    <!-- Note 01 — yellow / observación -->
+    <div class="note" style="left:1098px;top:200px">
+      Hero con propuesta clara y dual: <strong>buscar</strong> (input) y <strong>vender</strong> (Cash Offer). El usuario decide su intención en el primer pliegue.
+    </div>
+    <!-- Leadline 1 -->
+    <div class="leadline" style="left:1004px;top:240px;width:94px;height:20px">
+      <svg viewBox="0 0 94 20"><path d="M0 10 L94 10"/></svg>
+    </div>
+    <!-- Note 02 — green / insight -->
+    <div class="note note--insight" style="left:1098px;top:480px">
+      <strong>"Shop by budget" y "Shop by type"</strong> como entradas alternativas — desplazan el filtro clásico a un descubrimiento por necesidad. Patrón directamente transferible a Coches.net.
+    </div>
+    <div class="leadline" style="left:1004px;top:560px;width:94px;height:20px">
+      <svg viewBox="0 0 94 20"><path d="M0 10 L94 10"/></svg>
+    </div>
+    <!-- Note 03 — yellow / oportunidad -->
+    <div class="note" style="left:1098px;top:820px;max-width:300px">
+      Footer denso con <strong>navegación de marcas y categorías</strong> — SEO friendly. CNET lo aplica pero sin la jerarquía visual de TrueCar.
+    </div>
+  </div>
+</section>
+
+<!-- TrueCar · FIND YOUR FIT (Quiz visual) -->
+<section class="slide slide--paper" data-brand="truecar" data-section="findyourfit">
+  <div class="slide__mark">TRUECAR</div>
+  <div class="slide__section">FIND YOUR FIT</div>
+  <div class="slide__index"></div>
+  <div class="slide__foot">02.11.2</div>
+  <div class="page-analysis">
+    <!-- 4 capturas dispersas tipo quiz -->
+    <div class="page-analysis__shot" style="left:332px;top:165px;width:530px;height:295px">
+      <img src="assets/screenshots/truecar/findyourfit_quiz1.png" alt="Quiz must-haves" loading="lazy"/>
+    </div>
+    <div class="page-analysis__shot" style="left:1058px;top:165px;width:530px;height:295px">
+      <img src="assets/screenshots/truecar/findyourfit_quiz2.png" alt="Quiz marcas" loading="lazy"/>
+    </div>
+    <div class="page-analysis__shot" style="left:332px;top:560px;width:530px;height:295px">
+      <img src="assets/screenshots/truecar/findyourfit_fuel.png" alt="Quiz fuel type" loading="lazy"/>
+    </div>
+    <div class="page-analysis__shot" style="left:1058px;top:560px;width:530px;height:295px">
+      <img src="assets/screenshots/truecar/findyourfit_result.png" alt="Result personalized" loading="lazy"/>
+    </div>
+    <!-- Note 01 — sticky amarilla -->
+    <div class="note" style="left:48px;top:180px">
+      El <strong>quiz progresivo</strong> sustituye al dropdown clásico de filtros. Reduce la fricción del usuario primerizo y educa sobre las opciones del mercado.
+    </div>
+    <div class="leadline" style="left:288px;top:240px;width:44px;height:20px">
+      <svg viewBox="0 0 44 20"><path d="M0 10 L44 10"/></svg>
+    </div>
+    <!-- Note 02 — verde insight -->
+    <div class="note note--insight" style="left:1620px;top:180px">
+      Selección visual <strong>multimarca con check explícito</strong>. Estado seleccionado claramente diferenciado — patrón visual claro y accesible.
+    </div>
+    <div class="leadline" style="left:1588px;top:240px;width:32px;height:20px">
+      <svg viewBox="0 0 32 20"><path d="M0 10 L32 10"/></svg>
+    </div>
+    <!-- Note 03 — amarilla observación -->
+    <div class="note" style="left:48px;top:600px">
+      Tipo de combustible con <strong>iconografía + explicación</strong>. El glosario "Not familiar with different fuel types?" educa al usuario novato sin condescendencia.
+    </div>
+    <!-- Note 04 — verde insight final -->
+    <div class="note note--insight" style="left:1620px;top:600px">
+      <strong>Resultado personalizado con nombre del usuario.</strong> Cierra el embudo con un compromiso emocional ("we've found your fit!") — replicable en CNET Asistente.
+    </div>
+  </div>
+</section>
+
+<!-- TrueCar · RESEARCH (Centro editorial) -->
+<section class="slide slide--paper" data-brand="truecar" data-section="research">
+  <div class="slide__mark">TRUECAR</div>
+  <div class="slide__section">RESEARCH</div>
+  <div class="slide__index"></div>
+  <div class="slide__foot">02.11.3</div>
+  <div class="page-analysis">
+    <div class="page-analysis__shot" style="left:191px;top:154px;width:813px;height:830px">
+      <img src="assets/screenshots/truecar/research_main.png" alt="Research center" loading="lazy"/>
+    </div>
+    <div class="page-analysis__shot" style="left:1130px;top:154px;width:458px;height:380px">
+      <img src="assets/screenshots/truecar/research_side.png" alt="Research vehicles" loading="lazy"/>
+    </div>
+    <!-- Note 01 — verde insight -->
+    <div class="note note--insight" style="left:48px;top:200px">
+      <strong>Research</strong> aparece como una sección de primer nivel del menú principal. Tono editorial: "Explore Car Reviews from the Experts" — autoridad de mercado, no sólo catálogo.
+    </div>
+    <div class="leadline" style="left:0px;top:260px;width:191px;height:20px">
+      <svg viewBox="0 0 191 20"><path d="M0 10 L191 10"/></svg>
+    </div>
+    <!-- Note 02 — amarilla -->
+    <div class="note" style="left:48px;top:520px;max-width:300px">
+      <strong>Submenú con calculadoras + comparadores integrados</strong>. CNET tiene el contenido (canal YouTube, sección noticias) pero no lo integra como herramienta de decisión.
+    </div>
+    <!-- Note 03 — verde insight a la derecha -->
+    <div class="note note--insight" style="left:1130px;top:570px;max-width:300px">
+      <strong>"Best Ranked Vehicles by Category"</strong> — listas curadas con autoridad propia. Convierten la marca en referente, no en intermediario.
+    </div>
+    <div class="leadline" style="left:1130px;top:534px;width:90px;height:36px">
+      <svg viewBox="0 0 90 36"><path d="M0 0 L90 36"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- TrueCar · COMPARADOR -->
+<section class="slide slide--paper" data-brand="truecar" data-section="comparador">
+  <div class="slide__mark">TRUECAR</div>
+  <div class="slide__section">COMPARADOR</div>
+  <div class="slide__index"></div>
+  <div class="slide__foot">02.11.4</div>
+  <div class="page-analysis">
+    <div class="page-analysis__shot" style="left:120px;top:300px;width:560px;height:380px">
+      <img src="assets/screenshots/truecar/comparador_mini.png" alt="Compare entrada" loading="lazy"/>
+    </div>
+    <div class="page-analysis__shot" style="left:984px;top:102px;width:812px;height:880px">
+      <img src="assets/screenshots/truecar/comparador_full.png" alt="Compare side-by-side" loading="lazy"/>
+    </div>
+    <!-- Note 01 — amarilla observación -->
+    <div class="note" style="left:120px;top:140px;max-width:300px">
+      <strong>Entrada simple al comparador</strong>: dos cars, dropdowns de marca/modelo. Onboarding cero — añadir un tercer coche con un solo click.
+    </div>
+    <div class="leadline" style="left:300px;top:236px;width:24px;height:64px">
+      <svg viewBox="0 0 24 64"><path d="M0 0 L24 64"/></svg>
+    </div>
+    <!-- Note 02 — verde insight -->
+    <div class="note note--insight" style="left:744px;top:240px;max-width:240px">
+      <strong>"Highlight Winning Features"</strong> — el comparador no sólo lista specs, sino que <em>argumenta</em> cuál coche gana en cada criterio. CNET aún no diferencia.
+    </div>
+    <div class="leadline" style="left:984px;top:280px;width:42px;height:20px">
+      <svg viewBox="0 0 42 20"><path d="M0 10 L42 10"/></svg>
+    </div>
+    <!-- Note 03 — amarilla -->
+    <div class="note" style="left:744px;top:760px;max-width:240px">
+      Bajo el comparador, <strong>"Recommended for You"</strong> — cross-sell contextual a coches con stock disponible. Cierra el funnel sin obligar a salir.
+    </div>
+    <div class="leadline" style="left:984px;top:790px;width:42px;height:20px">
+      <svg viewBox="0 0 42 20"><path d="M0 10 L42 10"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- TrueCar · VENDER (True Cash Offer) -->
+<section class="slide slide--paper" data-brand="truecar" data-section="vender">
+  <div class="slide__mark">TRUECAR</div>
+  <div class="slide__section">VENDER</div>
+  <div class="slide__index"></div>
+  <div class="slide__foot">02.11.5</div>
+  <div class="page-analysis">
+    <div class="page-analysis__shot" style="left:191px;top:154px;width:813px;height:830px">
+      <img src="assets/screenshots/truecar/vender_offer.png" alt="True Cash Offer" loading="lazy"/>
+    </div>
+    <!-- Note 01 — amarilla observación -->
+    <div class="note" style="left:48px;top:200px">
+      <strong>"True Cash Offer™" en minutos</strong>: matrícula → VIN → ZIP → oferta. Tres datos, una promesa de marca registrada.
+    </div>
+    <div class="leadline" style="left:0px;top:240px;width:191px;height:20px">
+      <svg viewBox="0 0 191 20"><path d="M0 10 L191 10"/></svg>
+    </div>
+    <!-- Note 02 — verde insight -->
+    <div class="note note--insight" style="left:1098px;top:240px">
+      <strong>"Locked-In Price"</strong> — el precio se compromete durante 3 días con un dealer certificado. Resuelve el pain crítico de CNET (CSAT financiación 40,33%).
+    </div>
+    <div class="leadline" style="left:1004px;top:280px;width:94px;height:20px">
+      <svg viewBox="0 0 94 20"><path d="M0 10 L94 10"/></svg>
+    </div>
+    <!-- Note 03 — amarilla -->
+    <div class="note" style="left:1098px;top:520px">
+      <strong>Verified User Reviews</strong> con foto, nombre completo y comentario corto — humaniza la experiencia de venta, que suele ser asíncrona y fría.
+    </div>
+    <div class="leadline" style="left:1004px;top:560px;width:94px;height:20px">
+      <svg viewBox="0 0 94 20"><path d="M0 10 L94 10"/></svg>
+    </div>
+    <!-- Note 04 — verde insight final -->
+    <div class="note note--insight" style="left:1098px;top:800px;max-width:300px">
+      Educación post-CTA con un manual <strong>"Selling Your Car"</strong> — tiempo, valoración, ítems a comprobar. Construye autoridad de marca incluso si el usuario no convierte.
     </div>
   </div>
 </section>
@@ -4801,11 +5036,11 @@ SLIDE 86 — AGRADECIMIENTO / CIERRE
   const counter=document.getElementById('counter');
   const sidenav=document.getElementById('sidenav');
 
-  // Auto-scale 1280x720 slide to whatever container width is available
+  // Auto-scale 1920x1080 slide to whatever container width is available
   function applyScale(){
     if(document.body.classList.contains('is-fit')) return;
-    const target = Math.min(window.innerWidth - 24, 1280);
-    const scale = Math.max(0.32, target / 1280);
+    const target = Math.min(window.innerWidth - 24, 1920);
+    const scale = Math.max(0.22, target / 1920);
     document.documentElement.style.setProperty('--slide-scale', scale.toFixed(4));
   }
   applyScale();
